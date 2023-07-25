@@ -3,7 +3,6 @@ from string import ascii_letters
 import random
 
 class Game():
-
 	def __init__(self, difficulty, in_progress = True):
 		self.in_progress = in_progress
 
@@ -26,25 +25,47 @@ class Game():
 	def generate_board(self):
 
 		# Create a square array of .size
-		letters = ascii_letters[:self.size]
-		numbers = list(range(1, self.size + 1))
+		# TODO create array of arrays instead
+		self.letters = ascii_letters[:self.size]
+		self.numbers = list(range(1, self.size + 1))
 
 		self.board_layout = []
 		for letter in letters:
 			for number in numbers:
 				self.board_layout.append(letter + str(number))
 
-		# Generate num_mines random unique letter-int pairings, these are the coordinates of the mines - create Tile instances with is_mine = True
+		# Generate num_mines random unique letter-int pairings, these are the coordinates of the mines
 		mine_locations = random.sample(self.board_layout, self.num_mines)
 
-		# Iterate through each spot in the square array, if type == Tile, skip it, otherwise create Tile with coordinates (the current iteration in the nested for loop), 
-		# 	and num_adjacent_mines (which will requre iterating around all adjacent spaces and counting)
+		# Iterate through each spot in the square array, create a Tile object with the coordinates, and set is_mine = True
+		# if the coordinates appear in mine_locations
+		# num_adjacent_mines (which will requre iterating around all adjacent spaces and counting)
 		self.tiles = {}
 		for space in self.board_layout:
 			self.tiles[space] = Tile(space, is_mine = space in mine_locations)
 
 	def play(self, coordinates, operation):
+		tile = self.tiles[coordinates]
+		if operation.lower() == 'flag':
+			tile.is_flagged = not tile.is_flagged
+		elif operation.lower() == 'question':
+			tile.is_question = not tile.is_question
+		else:
+			tile.is_flipped = True
+			if tile.is_mine:
+				self.lose()
+			else:
+				# TODO calculate number of adjacent mines,
+				# 	if there are adjacent mines, return this number
+				# 	if there are no adjacent mines, recursively flip adjacent tiles in all directions until adjacent mines are found
+				pass
+
 		print(coordinates + ': ' + operation)
+
+	def get_adjacent_tiles(self, tile):
+		tile_row = tile.coordinates[0]
+		tile_column = tile.coordinates[1]
+		tile_row_index =
 
 	def draw_board(self):
 		# Save this as a last step, get the functional stuff working first
