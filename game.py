@@ -1,7 +1,7 @@
 from tile import Tile
 import random
 
-class Game():
+class Game:
 	def __init__(self, difficulty, in_progress = True):
 		self.in_progress = in_progress
 

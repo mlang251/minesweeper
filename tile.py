@@ -1,4 +1,4 @@
-class Tile():
+class Tile:
 
 	def __init__(self, coordinates, is_mine = False, num_adjacent_mines = None, is_flipped = False, is_flagged = False, is_question = False):
 		self.coordinates = coordinates					# tuple of zero indexed row, column pairs
