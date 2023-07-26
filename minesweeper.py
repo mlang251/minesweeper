@@ -7,23 +7,31 @@ def main():
 
 	try:
 		while game.in_progress:
-
-			coordinates = ''
+			row = ''
+			column = ''
 			operation = ''
 			while True:
-				coordinates = input('Enter coordinates: ')
-				if coordinates in game.board_layout:
+				row = input('Enter row: ')
+				if 0 <= row < game.size:
 					break
 				else:
-					print('Enter valid coordinates\n')
+					print('Enter valid row number\n')
 
+			while True:
+				column = input('Enter column: ')
+				if 0 <= column < game.size:
+					break
+				else:
+					print('Enter valid row number\n')
+
+			# TODO - operation may not be possible on chosen tile if it is already flipped - this logic can go in game.play()
 			while True:
 				operation = input('Flip, Flag, or Question? ')
 				if operation.lower() in ['flip', 'flag', 'question']:
 					break
 				else:
 					print('Enter a valid operation\n')
-			game.play(coordinates, operation)
+			game.play(row, column, operation)
 
 	except KeyboardInterrupt:
 		print('\nSee you next time!')
