@@ -10,13 +10,15 @@ class Game:
 		difficulty = difficulty.lower()
 		if difficulty == 'easy':
 			self.size = 8
-			self.num_mines = 10
+			self.num_mines = 1
 		elif difficulty == 'medium':
 			self.size = 14
 			self.num_mines = 40
 		else:
 			self.size = 20
 			self.num_mines = 80
+
+		self.num_safe_tiles_remaining = self.size ** 2 - self.num_mines
 
 		self.generate_board()
 		self.draw_board()
@@ -36,6 +38,7 @@ class Game:
 				counter += 1
 
 		# Iterate through all Tiles and set .num_adjacent_mines for each
+		# TODO - make this 1 indexed
 		for row in range(self.size):
 			for column in range(self.size):
 				tile = self.get_tile(row, column)
@@ -57,6 +60,7 @@ class Game:
 	def flip_tile(self, tile):
 		if not tile.is_flipped:			# Have to include this check, otherwise recursion might try to flip a flipped tile
 			tile.is_flipped = True
+			self.num_safe_tiles_remaining -= 1
 		else:
 			return None
 		if tile.is_mine:
@@ -91,6 +95,8 @@ class Game:
 			tile.toggle_question()
 		else:
 			self.flip_tile(tile)
+			if self.num_safe_tiles_remaining == 0:
+				self.win()
 
 		print('row {row}, column {column}: {operation}'.format(row=row, column=column, operation=operation))
 		self.draw_board()
