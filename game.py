@@ -1,4 +1,4 @@
-from tile import Tile
+from .tile import Tile
 import random
 
 class Game:
@@ -56,10 +56,14 @@ class Game:
 
 	def play(self, row, column, operation):
 		tile = self.get_tile(row, column)
+		if tile.is_flipped:
+			print('Tile {coordinates} is already flipped'.format(coordinates=(row, column)))
+			return
+
 		if operation.lower() == 'flag':
-			tile.is_flagged = not tile.is_flagged
+			tile.toggle_flag()
 		elif operation.lower() == 'question':
-			tile.is_question = not tile.is_question
+			tile.toggle_question()
 		else:
 			tile.is_flipped = True
 			if tile.is_mine:
@@ -68,7 +72,8 @@ class Game:
 				# TODO calculate number of adjacent mines,
 				# 	if there are adjacent mines, return this number
 				# 	if there are no adjacent mines, recursively flip adjacent tiles in all directions until adjacent mines are found
-				pass
+				# 	move this logic into a Tile method? pass it the output of self.get_adjacent_tiles()
+				adjacent_mines = tile.num_adjacent_mines
 
 		print(coordinates + ': ' + operation)
 

@@ -1,4 +1,4 @@
-from game import Game
+from .game import Game
 
 def main():
 
@@ -24,7 +24,6 @@ def main():
 				else:
 					print('Enter valid row number\n')
 
-			# TODO - operation may not be possible on chosen tile if it is already flipped - this logic can go in game.play()
 			while True:
 				operation = input('Flip, Flag, or Question? ')
 				if operation.lower() in ['flip', 'flag', 'question']:
