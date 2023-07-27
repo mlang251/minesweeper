@@ -124,7 +124,7 @@ class Game:
 		self.in_progress = False
 
 	def lose(self):
-		# Reveal all remaining mines
+		# TODO - Reveal all remaining mines
 		self.draw_board()
 		print('You lose :(')
 		self.in_progress = False
