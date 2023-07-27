@@ -63,7 +63,10 @@ class Game:
 		else:
 			# TODO - Fix this, RecursionError: maximum recursion depth exceeded
 			adjacent_mines = tile.num_adjacent_mines
-			if adjacent_mines > 0:
+			if adjacent_mines < 0:
+				print('Error! tile has negative number of adjacent mines')
+				return None
+			elif adjacent_mines > 0:
 				return adjacent_mines
 			else:
 				adjacent_tiles = self.get_adjacent_tiles(tile)
