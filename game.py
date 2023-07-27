@@ -44,7 +44,7 @@ class Game:
 					num_adjacent_mines = 0
 					for coordinates in adjacent_tiles:
 						adjacent_row, adjacent_column = coordinates
-						# We are only concerned with coordinates that are actually on the board
+						# if the coordinates are a valid Tile
 						if 0 <= adjacent_row < self.size and 0 <= adjacent_column < self.size:
 							adjacent_tile = self.get_tile(adjacent_row, adjacent_column)
 							if adjacent_tile.is_mine:
@@ -55,13 +55,15 @@ class Game:
 		return self.board_layout[row][column]
 
 	def flip_tile(self, tile):
-		tile.is_flipped = True
+		if not tile.is_flipped:			# Have to include this check, otherwise recursion might try to flip a flipped tile
+			tile.is_flipped = True
+		else:
+			return None
 		if tile.is_mine:
 			# TODO - should probably call .lose() from .play()
 			self.lose()
 			return None
 		else:
-			# TODO - Fix this, RecursionError: maximum recursion depth exceeded
 			adjacent_mines = tile.num_adjacent_mines
 			if adjacent_mines < 0:
 				print('Error! tile has negative number of adjacent mines')
@@ -71,9 +73,11 @@ class Game:
 			else:
 				adjacent_tiles = self.get_adjacent_tiles(tile)
 				for coordinates in adjacent_tiles:
-					row, column = coordinates
-					this_tile = self.get_tile(row, column)
-					self.flip_tile(this_tile)
+					adjacent_row, adjacent_column = coordinates
+					# if the coordinates are a valid Tile
+					if 0 <= adjacent_row < self.size and 0 <= adjacent_column < self.size:
+						adjacent_tile = self.get_tile(adjacent_row, adjacent_column)
+						self.flip_tile(adjacent_tile)
 
 	def play(self, row, column, operation):
 		tile = self.get_tile(row, column)
