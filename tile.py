@@ -16,7 +16,7 @@ class Tile:
 		elif self.is_flipped:
 			return 'X' if self.is_mine else str(self.num_adjacent_mines)
 		else:
-			return ''
+			return ' '
 	def toggle_flag(self):
 		self.is_flagged = not self.is_flagged
 
