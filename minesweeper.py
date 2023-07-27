@@ -1,4 +1,4 @@
-from .game import Game
+from game import Game
 
 def main():
 
@@ -11,25 +11,25 @@ def main():
 			column = ''
 			operation = ''
 			while True:
-				row = input('Enter row: ')
+				row = int(input('Enter row: '))
 				if 0 <= row < game.size:
 					break
 				else:
-					print('Enter valid row number\n')
+					print('Enter valid row number')
 
 			while True:
-				column = input('Enter column: ')
+				column = int(input('Enter column: '))
 				if 0 <= column < game.size:
 					break
 				else:
-					print('Enter valid row number\n')
+					print('Enter valid row number')
 
 			while True:
 				operation = input('Flip, Flag, or Question? ')
 				if operation.lower() in ['flip', 'flag', 'question']:
 					break
 				else:
-					print('Enter a valid operation\n')
+					print('Enter a valid operation')
 			game.play(row, column, operation)
 
 	except KeyboardInterrupt:

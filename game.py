@@ -1,4 +1,4 @@
-from .tile import Tile
+from tile import Tile
 import random
 
 class Game:
@@ -54,6 +54,27 @@ class Game:
 	def get_tile(self, row, column):
 		return self.board_layout[row][column]
 
+	def flip_tile(self, tile):
+		tile.is_flipped = True
+		if tile.is_mine:
+			# TODO - should probably call .lose() from .play()
+			self.lose()
+			return None
+		else:
+			# TODO calculate number of adjacent mines,
+			# 	if there are adjacent mines, return this number
+			# 	if there are no adjacent mines, recursively flip adjacent tiles in all directions until adjacent mines are found
+			adjacent_mines = tile.num_adjacent_mines
+			if adjacent_mines > 0:
+				print()
+				return adjacent_mines
+			else:
+				adjacent_tiles = self.get_adjacent_tiles(tile)
+				for coordinates in adjacent_tiles:
+					row, column = coordinates
+					this_tile = self.get_tile(row, column)
+					self.flip_tile((this_tile))
+
 	def play(self, row, column, operation):
 		tile = self.get_tile(row, column)
 		if tile.is_flipped:
@@ -65,21 +86,14 @@ class Game:
 		elif operation.lower() == 'question':
 			tile.toggle_question()
 		else:
-			tile.is_flipped = True
-			if tile.is_mine:
-				self.lose()
-			else:
-				# TODO calculate number of adjacent mines,
-				# 	if there are adjacent mines, return this number
-				# 	if there are no adjacent mines, recursively flip adjacent tiles in all directions until adjacent mines are found
-				# 	move this logic into a Tile method? pass it the output of self.get_adjacent_tiles()
-				adjacent_mines = tile.num_adjacent_mines
+			self.flip_tile(tile)
 
-		print(coordinates + ': ' + operation)
+		print('row {row}, column {column}: {operation}'.format(row=row, column=column, operation=operation))
 
 	def get_adjacent_tiles(self, tile):
 		row, column = tile.coordinates
 		# Return coordinates of all adjacent tiles (note, if a tile is on the edge, some of these will be out of bounds)
+		# TODO - only return valid tile coordinates, remove any unnecessary error handling at locations that call this method
 		return [(row-1, column-1), (row-1, column), (row-1, column+1),
 				(row, column-1), (row, column+1),
 				(row+1, column-1), (row+1, column), (row+1, column+1)]
