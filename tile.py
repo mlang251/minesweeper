@@ -9,8 +9,14 @@ class Tile:
 		self.is_question = is_question
 
 	def __repr__(self):
-		return 'X' if self.is_mine else str(self.num_adjacent_mines)
-
+		if self.is_flagged:
+			return 'F'
+		elif self.is_question:
+			return '?'
+		elif self.is_flipped:
+			return 'X' if self.is_mine else str(self.num_adjacent_mines)
+		else:
+			return ''
 	def toggle_flag(self):
 		self.is_flagged = not self.is_flagged
 

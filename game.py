@@ -61,19 +61,16 @@ class Game:
 			self.lose()
 			return None
 		else:
-			# TODO calculate number of adjacent mines,
-			# 	if there are adjacent mines, return this number
-			# 	if there are no adjacent mines, recursively flip adjacent tiles in all directions until adjacent mines are found
+			# TODO - Fix this, RecursionError: maximum recursion depth exceeded
 			adjacent_mines = tile.num_adjacent_mines
 			if adjacent_mines > 0:
-				print()
 				return adjacent_mines
 			else:
 				adjacent_tiles = self.get_adjacent_tiles(tile)
 				for coordinates in adjacent_tiles:
 					row, column = coordinates
 					this_tile = self.get_tile(row, column)
-					self.flip_tile((this_tile))
+					self.flip_tile(this_tile)
 
 	def play(self, row, column, operation):
 		tile = self.get_tile(row, column)
@@ -89,6 +86,7 @@ class Game:
 			self.flip_tile(tile)
 
 		print('row {row}, column {column}: {operation}'.format(row=row, column=column, operation=operation))
+		self.draw_board()
 
 	def get_adjacent_tiles(self, tile):
 		row, column = tile.coordinates
