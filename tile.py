@@ -9,6 +9,9 @@ class Tile:
 		self.is_question = is_question
 
 	def __repr__(self):
+		# TODO - these representations need to be fixed. If a tile is a mine it takes precedence over flag or question
+		# 	if the lose condition is hit. Also if user questions a flag, it shoud change to a question, and vice versa
+		# 	this logic should be in the toggle_ methods
 		if self.is_flagged:
 			return 'F'
 		elif self.is_question:
@@ -17,6 +20,7 @@ class Tile:
 			return 'X' if self.is_mine else str(self.num_adjacent_mines)
 		else:
 			return ' '
+
 	def toggle_flag(self):
 		self.is_flagged = not self.is_flagged
 
