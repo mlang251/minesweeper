@@ -10,7 +10,12 @@ class Tile:
 
 	def __repr__(self):
 		if self.is_flipped:
-			return 'X' if self.is_mine else str(self.num_adjacent_mines)
+			if self.is_mine:
+				return 'X'
+			elif self.num_adjacent_mines == 0:
+				return ' '
+			else:
+				return str(self.num_adjacent_mines)
 		elif self.is_flagged:
 			return 'F'
 		elif self.is_question:
