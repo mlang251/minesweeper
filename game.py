@@ -10,7 +10,7 @@ class Game:
 		difficulty = difficulty.lower()
 		if difficulty == 'easy':
 			self.size = 8
-			self.num_mines = 30
+			self.num_mines = 10
 		elif difficulty == 'medium':
 			self.size = 14
 			self.num_mines = 40
@@ -38,7 +38,6 @@ class Game:
 				counter += 1
 
 		# Iterate through all Tiles and set .num_adjacent_mines for each
-		# TODO - make this 1 indexed
 		for row in range(self.size):
 			for column in range(self.size):
 				tile = self.get_tile(row, column)
@@ -82,7 +81,7 @@ class Game:
 						self.flip_tile(adjacent_tile)
 
 	def play(self, row, column, operation):
-		tile = self.get_tile(row, column)
+		tile = self.get_tile(row - 1, column - 1)	# Subtracting 1 from each because board is represented as 1-indexed
 		if tile.is_flipped:
 			print('Tile {coordinates} is already flipped'.format(coordinates=(row, column)))
 			return
@@ -109,10 +108,11 @@ class Game:
 				(row+1, column-1), (row+1, column), (row+1, column+1)]
 
 	def draw_board(self):
-		# Save this as a last step, get the functional stuff working first
 		# Print a visual representation of the game board as it currently is, with flipped tiles, flags, question marks
+		column_numbers = [' {column_number} '.format(column_number = str(i + 1)) for i in range(self.size)]
+		print('  ' + ''.join(column_numbers))
 		for i in range(self.size):
-			row = ''
+			row = str(i + 1) + ' '
 			for j in range(self.size):
 				row += '[{}]'.format(self.board_layout[i][j])
 			print(row)
