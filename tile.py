@@ -16,7 +16,7 @@ class Tile:
 		elif self.is_question:
 			return '?'
 		else:
-			return ' '
+			return chr(0x25A0)
 
 	def toggle_flag(self):
 		if self.is_question:
