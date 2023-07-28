@@ -10,6 +10,7 @@ def main():
 			row = ''
 			column = ''
 			operation = ''
+			# TODO - cleaner way to do these error handlings?
 			while True:
 				row = int(input('Enter row: '))
 				if 0 <= row < game.size:
