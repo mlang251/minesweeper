@@ -13,6 +13,7 @@ def main():
 			# TODO - cleaner way to do these error handlings?
 			while True:
 				row = int(input('Enter row: '))
+				# TODO - if input is not an int this throws an error
 				if 0 <= row < game.size:
 					break
 				else:
@@ -20,6 +21,7 @@ def main():
 
 			while True:
 				column = int(input('Enter column: '))
+				# TODO - if input is not an int this throws an error
 				if 0 <= column < game.size:
 					break
 				else:
