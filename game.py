@@ -10,7 +10,7 @@ class Game:
 		difficulty = difficulty.lower()
 		if difficulty == 'easy':
 			self.size = 8
-			self.num_mines = 1
+			self.num_mines = 30
 		elif difficulty == 'medium':
 			self.size = 14
 			self.num_mines = 40
@@ -64,9 +64,7 @@ class Game:
 		else:
 			return None
 		if tile.is_mine:
-			# TODO - should probably call .lose() from .play()
-			self.lose()
-			return None
+			return 'mine'
 		else:
 			adjacent_mines = tile.num_adjacent_mines
 			if adjacent_mines < 0:
@@ -94,13 +92,14 @@ class Game:
 		elif operation.lower() == 'question':
 			tile.toggle_question()
 		else:
-			self.flip_tile(tile)
-			if self.num_safe_tiles_remaining == 0:
+			result = self.flip_tile(tile)
+			if result == 'mine':
+				self.lose()
+				return
+			elif self.num_safe_tiles_remaining == 0:
 				self.win()
-
-		print('row {row}, column {column}: {operation}'.format(row=row, column=column, operation=operation))
+				return
 		self.draw_board()
-
 	def get_adjacent_tiles(self, tile):
 		row, column = tile.coordinates
 		# Return coordinates of all adjacent tiles (note, if a tile is on the edge, some of these will be out of bounds)
@@ -121,10 +120,15 @@ class Game:
 	def win(self):
 		self.draw_board()
 		print('You win!')
+		# TODO - play again? input
 		self.in_progress = False
 
 	def lose(self):
-		# Reveal all remaining mines
+		for row in self.board_layout:
+			for tile in row:
+				if tile.is_mine and not tile.is_flipped:
+					self.flip_tile(tile)
 		self.draw_board()
 		print('You lose :(')
+		# TODO - play again? input
 		self.in_progress = False
