@@ -38,7 +38,6 @@ class Game:
 				counter += 1
 
 		# Iterate through all Tiles and set .num_adjacent_mines for each
-		# TODO - make this 1 indexed
 		for row in range(self.size):
 			for column in range(self.size):
 				tile = self.get_tile(row, column)
