@@ -1,6 +1,6 @@
 class Tile:
 
-	def __init__(self, coordinates, is_mine = False, num_adjacent_mines = None, is_flipped = False, is_flagged = False, is_question = False):
+	def __init__(self, coordinates, is_mine=False, num_adjacent_mines=None, is_flipped=False, is_flagged=False, is_question=False):
 		self.coordinates = coordinates					# tuple of zero indexed row, column pairs
 		self.is_mine = is_mine
 		self.num_adjacent_mines = num_adjacent_mines
