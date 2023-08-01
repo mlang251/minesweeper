@@ -5,7 +5,7 @@ def main():
 
 	difficulty = ''
 	while True:
-		user_input = input('Welcome to Marksweeper! Easy, Medium, or Hard difficulty?\n')
+		user_input = input('\n\nWelcome to Marksweeper! Easy, Medium, or Hard difficulty?\n')
 		if user_input.lower() in ['easy', 'medium', 'hard']:
 			difficulty = user_input.lower()
 			break

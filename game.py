@@ -118,7 +118,7 @@ class Game:
 		tile = self.get_tile(row, column)
 		if tile.is_flipped:
 			# If the Tile is already flipped, there's nothing we can do this turn
-			print('Tile {coordinates} is already flipped'.format(coordinates=(row, column)))
+			print('Tile {coordinates} is already flipped'.format(coordinates=(row + 1, column + 1)))
 			return
 
 		# Flag, Question, or Flip the Tile and then draw the board again
@@ -135,6 +135,8 @@ class Game:
 			elif self.num_safe_tiles_remaining == 0:
 				self.win()
 				return
+
+		print('\n')
 		self.draw_board()
 
 	def win(self):
