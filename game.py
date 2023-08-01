@@ -114,7 +114,7 @@ class Game:
 			print(row)
 
 	def play(self, row, column, operation):
-		# User inputs an operation to perform on a certain Tile
+		# row, column, and operation were user inputs for an operation to perform on a certain Tail
 		tile = self.get_tile(row, column)
 		if tile.is_flipped:
 			# If the Tile is already flipped, there's nothing we can do this turn
@@ -135,14 +135,15 @@ class Game:
 			elif self.num_safe_tiles_remaining == 0:
 				self.win()
 				return
-
+		# After all the logic is done for this turn, draw a current representation of the game board
 		print('\n')
 		self.draw_board()
 
 	def win(self):
 		# All safe spaces have been flipped!
+		print('\n')
 		self.draw_board()
-		print('You win!')
+		print('You win!\n')
 		self.in_progress = False
 
 	def lose(self):
@@ -151,6 +152,7 @@ class Game:
 			for tile in row:
 				if tile.is_mine and not tile.is_flipped:
 					self.flip_tile(tile)
+		print('\n')
 		self.draw_board()
-		print('You lose :(')
+		print('You lose :(\n')
 		self.in_progress = False
