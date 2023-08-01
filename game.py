@@ -10,7 +10,7 @@ class Game:
 		difficulty = difficulty.lower()
 		if difficulty == 'easy':
 			self.size = 8
-			self.num_mines = 1
+			self.num_mines = 10
 		elif difficulty == 'medium':
 			self.size = 14
 			self.num_mines = 40
