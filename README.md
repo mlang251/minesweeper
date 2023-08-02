@@ -10,3 +10,8 @@ It's so much fun to win! What's going on in this gif? User inputs a row, column 
 And it's still a litle bit fun to lose. If you flip a tile that is a mine, the remaining mines will be revealed and it's game over.
 
 ![](https://github.com/mlang251/minesweeper/blob/main/gifs/you-lose.gif)
+
+
+**Future Improvements**
+- Color code different Tile representations so the game board is more readable
+- Create a GUI or web app so that the game can be played by clicking rather than typing row and column numbers
