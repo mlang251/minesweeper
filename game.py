@@ -37,7 +37,7 @@ class Game:
                 (row, column - 1), (row, column + 1),
                 (row + 1, column - 1), (row + 1, column), (row + 1, column + 1)]
 
-    def get_num_adjacent_mines(self, tile):
+    def set_num_adjacent_mines(self, tile):
         adjacent_tiles = self.get_adjacent_tiles(tile)
         num_adjacent_mines = 0
         for coordinates in adjacent_tiles:
@@ -65,7 +65,7 @@ class Game:
             for column in range(self.size):
                 tile = self.get_tile(row, column)
                 if not tile.is_mine:
-                    self.get_num_adjacent_mines(tile)
+                    self.set_num_adjacent_mines(tile)
 
     def draw_board(self):
         # Print a visual representation of the game board as it currently is, with flipped tiles, flags, question marks
