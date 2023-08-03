@@ -30,6 +30,9 @@ class Tile:
         else:
             return chr(0x25A0)
 
+    def get_coordinates(self):
+        return self.coordinates
+
     def toggle_flag(self):
         if self.is_question:
             self.toggle_question()
