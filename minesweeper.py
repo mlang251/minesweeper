@@ -22,7 +22,6 @@ def main():
                 except ValueError:
                     print("Enter valid row number")
                 else:
-                    # Check row is in the bounds of the game board
                     if 0 <= row < game.size:
                         break
                     else:
@@ -35,7 +34,6 @@ def main():
                 except ValueError:
                     print("Enter valid column number")
                 else:
-                    # Check column is in the bounds of the game board
                     if 0 <= column < game.size:
                         break
                     else:

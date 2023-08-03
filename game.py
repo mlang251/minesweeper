@@ -5,9 +5,6 @@ import random
 class Game:
     def __init__(self, difficulty, in_progress=True):
         self.in_progress = in_progress
-
-        # .size is based on difficulty - easy = 8 x 8, medium = 14 x 14, hard = 20 x 20
-        # .num_mines is based on difficulty - easy = 10, medium = 40, hard = 80
         difficulty = difficulty.lower()
         if difficulty == "easy":
             self.size = 8
@@ -19,10 +16,8 @@ class Game:
             self.size = 20
             self.num_mines = 80
 
-        # Create a square array of .size
+        self.num_safe_tiles_remaining = self.size ** 2 - self.num_mines
         self.board_layout = [[None for i in range(self.size)] for j in range(self.size)]
-        # This attribute is needed to determine the win condition
-        self.num_safe_tiles_remaining = self.size**2 - self.num_mines
 
         self.generate_board()
         self.draw_board()
@@ -31,8 +26,8 @@ class Game:
         return self.board_layout[row][column]
 
     def get_adjacent_tiles(self, tile):
-        row, column = tile.coordinates
-        # Return coordinates of all adjacent tiles (note, if a tile is on the edge, some of these will be out of bounds)
+        # Note - if a tile is on the edge of the board some of these will be out of bounds
+        row, column = tile.get_coordinates()
         return [(row - 1, column - 1), (row - 1, column), (row - 1, column + 1),
                 (row, column - 1), (row, column + 1),
                 (row + 1, column - 1), (row + 1, column), (row + 1, column + 1)]
@@ -42,8 +37,6 @@ class Game:
         num_adjacent_mines = 0
         for coordinates in adjacent_tiles:
             adjacent_row, adjacent_column = coordinates
-            # Coordinates from get_adjacent_tiles might be out of bounds
-            # so check to see if the coordinates are a valid Tile
             if 0 <= adjacent_row < self.size and 0 <= adjacent_column < self.size:
                 adjacent_tile = self.get_tile(adjacent_row, adjacent_column)
                 if adjacent_tile.is_mine:
@@ -68,8 +61,6 @@ class Game:
                     self.set_num_adjacent_mines(tile)
 
     def draw_board(self):
-        # Print a visual representation of the game board as it currently is, with flipped tiles, flags, question marks
-        # First print the header row with 1-indexed column numbers
         column_numbers = []
         for i in range(self.size):
             # Printing these numbers gets funky when going to double digits, so a variable padding is needed
@@ -77,9 +68,6 @@ class Game:
             column_number = str(i + 1)
             column_numbers.append(f"{padding}{column_number} ")
         print("  " + "".join(column_numbers))
-
-        # Now print each row number followed by the Tiles in that row. Tile class has a .__repr__ method, so each
-        # Tile can display whatever information is relevant
         for i in range(self.size):
             padding = " " if i + 1 < 10 else ""
             row = str(i + 1) + padding
@@ -89,20 +77,16 @@ class Game:
             print(row)
 
     def flip_tile(self, tile):
-        # Flip a tile and check if it's a mine. If it's a mine, game is over
         tile.is_flipped = True
         if tile.is_mine:
             return "mine"
         else:
-            # If it's a safe space, we need to check how many adjacent mines there are
             self.num_safe_tiles_remaining -= 1
             adjacent_mines = tile.num_adjacent_mines
             if adjacent_mines < 0:
                 print("Error! tile has negative number of adjacent mines")
                 return None
             elif adjacent_mines > 0:
-                # If there are adjacent mines, we can exit the .flip_tile method. The tile will now be represented
-                # 	by the number of adjacent mines when the board is printed
                 return None
             else:
                 # If there are no adjacent mines, we need to flip all adjacent tiles recursively until tiles with
@@ -114,21 +98,17 @@ class Game:
         adjacent_tiles = self.get_adjacent_tiles(tile)
         for coordinates in adjacent_tiles:
             row, column = coordinates
-            # if the coordinates are a valid Tile that has not been flipped, flip that Tile
             if 0 <= row < self.size and 0 <= column < self.size:
                 adjacent_tile = self.get_tile(row, column)
                 if not adjacent_tile.is_flipped:
                     self.flip_tile(adjacent_tile)
 
     def play(self, row, column, operation):
-        # row, column, and operation were user inputs for an operation to perform on a certain Tail
         tile = self.get_tile(row, column)
         if tile.is_flipped:
-            # If the Tile is already flipped, there's nothing we can do this turn
             print("Tile {coordinates} is already flipped".format(coordinates=(row + 1, column + 1)))
             return
 
-        # Flag, Question, or Flip the Tile and then draw the board again
         if operation.lower() == "flag":
             tile.toggle_flag()
         elif operation.lower() == "question":
@@ -142,19 +122,16 @@ class Game:
             elif self.num_safe_tiles_remaining == 0:
                 self.win()
                 return
-        # After all the logic is done for this turn, draw a current representation of the game board
         print("\n")
         self.draw_board()
 
     def win(self):
-        # All safe spaces have been flipped!
         print("\n")
         self.draw_board()
         print("You win!\n")
         self.in_progress = False
 
     def lose(self):
-        # Flip all remaining mines
         for row in self.board_layout:
             for tile in row:
                 if tile.is_mine and not tile.is_flipped:
